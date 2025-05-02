@@ -20,15 +20,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: 'npm'
+      
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm install
+          npm install gh-pages --save-dev
+      
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          touch build/.nojekyll
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
