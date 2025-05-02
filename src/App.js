@@ -5,7 +5,8 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import HomePage from './components/pages/HomePage';
 import AddressFormPage from './components/pages/AddressFormPage';
-import LabelPreviewPage from './components/pages/LabelPreviewPage';
+import PreviewLabelPage from './components/pages/PreviewLabelPage';
+import SuccessPage from './components/pages/SuccessPage';
 import SettingsPage from './components/pages/SettingsPage';
 import './App.css';
 
@@ -32,7 +33,8 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/create-label" element={<AddressFormPage />} />
-            <Route path="/preview-label/:id" element={<LabelPreviewPage />} />
+            <Route path="/preview-label/:id" element={<PreviewLabelPage />} />
+            <Route path="/success" element={<SuccessPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </MainContent>

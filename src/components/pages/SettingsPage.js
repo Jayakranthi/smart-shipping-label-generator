@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaArrowLeft, FaSave, FaUndo } from 'react-icons/fa';
+import { FaArrowLeft, FaSave, FaUndo, FaCog, FaKey } from 'react-icons/fa';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import FormInput from '../forms/FormInput';
@@ -9,16 +9,27 @@ import FormSelect from '../forms/FormSelect';
 import FormCheckbox from '../forms/FormCheckbox';
 import Alert from '../common/Alert';
 
-const PageHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
 `;
 
-const PageTitle = styled.h1`
-  font-size: 1.75rem;
-  margin: 0;
+const PageHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  
+  h1 {
+    margin: 0;
+    font-size: 1.75rem;
+  }
+  
+  svg {
+    font-size: 2rem;
+    color: var(--primary-color);
+  }
 `;
 
 const SettingsGrid = styled.div`
@@ -186,9 +197,10 @@ const SettingsPage = () => {
   };
   
   return (
-    <div>
+    <Container>
       <PageHeader>
-        <PageTitle>Settings</PageTitle>
+        <FaCog />
+        <h1>Settings</h1>
       </PageHeader>
       
       {saveSuccess && (
@@ -200,255 +212,266 @@ const SettingsPage = () => {
         />
       )}
       
-      <form onSubmit={handleSubmit}>
-        <SettingsGrid>
-          <div>
-            <Card title="API Settings">
-              <SectionTitle>Address Validation & Label Generation APIs</SectionTitle>
-              <FormInput
-                name="googleApiKey"
-                label="Google Address Validation API Key"
-                placeholder="Enter your Google API key"
-                value={settings.googleApiKey}
-                onChange={handleChange}
-              />
-              
-              <FormInput
-                name="easypostApiKey"
-                label="EasyPost API Key"
-                placeholder="Enter your EasyPost API key"
-                value={settings.easypostApiKey}
-                onChange={handleChange}
-              />
-              
-              <FormInput
-                name="uspsApiKey"
-                label="USPS Web Tools API Key (Optional)"
-                placeholder="Enter your USPS API key"
-                value={settings.uspsApiKey}
-                onChange={handleChange}
-              />
-            </Card>
-            
-            <Card title="Default Shipping Preferences" style={{ marginTop: '2rem' }}>
-              <FormSelect
-                name="defaultCarrier"
-                label="Preferred Carrier"
-                options={CARRIERS}
-                value={settings.defaultCarrier}
-                onChange={handleChange}
-              />
-              
-              <FormSelect
-                name="defaultServiceType"
-                label="Default Service Type"
-                options={serviceTypes}
-                value={settings.defaultServiceType}
-                onChange={handleChange}
-              />
-              
-              <FormSelect
-                name="defaultPackageType"
-                label="Default Package Type"
-                options={PACKAGE_TYPES}
-                value={settings.defaultPackageType}
-                onChange={handleChange}
-              />
-              
-              {settings.defaultPackageType === 'custom' && (
-                <div className="mt-2">
-                  <SectionTitle>Custom Package Dimensions</SectionTitle>
-                  <div className="grid grid-2">
-                    <FormInput
-                      name="length"
-                      label="Length (inches)"
-                      type="number"
-                      value={settings.length}
-                      onChange={handleChange}
-                    />
-                    
-                    <FormInput
-                      name="width"
-                      label="Width (inches)"
-                      type="number"
-                      value={settings.width}
-                      onChange={handleChange}
-                    />
-                    
-                    <FormInput
-                      name="height"
-                      label="Height (inches)"
-                      type="number"
-                      value={settings.height}
-                      onChange={handleChange}
-                    />
-                    
-                    <FormInput
-                      name="weight"
-                      label="Weight (lbs)"
-                      type="number"
-                      value={settings.weight}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              )}
-            </Card>
-          </div>
+      <Card title="API Configuration">
+        <form onSubmit={handleSubmit}>
+          <FormInput
+            label="Google API Key"
+            type="password"
+            placeholder="Enter your Google API key"
+            icon={<FaKey />}
+            name="googleApiKey"
+            value={settings.googleApiKey}
+            onChange={handleChange}
+          />
           
-          <div>
-            <Card title="Default Sender Information">
-              <FormInput
-                name="senderName"
-                label="Name"
-                placeholder="Your Name"
-                value={settings.senderName}
-                onChange={handleChange}
-              />
-              
-              <FormInput
-                name="senderCompany"
-                label="Company (Optional)"
-                placeholder="Your Company"
-                value={settings.senderCompany}
-                onChange={handleChange}
-              />
-              
-              <FormInput
-                name="senderStreet1"
-                label="Street Address"
-                placeholder="123 Main St"
-                value={settings.senderStreet1}
-                onChange={handleChange}
-              />
-              
-              <FormInput
-                name="senderStreet2"
-                label="Apartment, Suite, etc. (Optional)"
-                placeholder="Suite 100"
-                value={settings.senderStreet2}
-                onChange={handleChange}
-              />
-              
-              <div className="grid grid-2">
-                <FormInput
-                  name="senderCity"
-                  label="City"
-                  placeholder="San Francisco"
-                  value={settings.senderCity}
-                  onChange={handleChange}
-                />
-                
-                <FormInput
-                  name="senderState"
-                  label="State"
-                  placeholder="CA"
-                  value={settings.senderState}
-                  onChange={handleChange}
-                />
-                
-                <FormInput
-                  name="senderZipCode"
-                  label="ZIP Code"
-                  placeholder="94107"
-                  value={settings.senderZipCode}
-                  onChange={handleChange}
-                />
-                
-                <FormSelect
-                  name="senderCountry"
-                  label="Country"
-                  options={[
-                    { value: 'US', label: 'United States' },
-                    { value: 'CA', label: 'Canada' },
-                    { value: 'MX', label: 'Mexico' }
-                  ]}
-                  value={settings.senderCountry}
-                  onChange={handleChange}
-                />
-              </div>
-              
-              <FormInput
-                name="senderPhone"
-                label="Phone Number"
-                placeholder="(123) 456-7890"
-                value={settings.senderPhone}
-                onChange={handleChange}
-              />
-              
-              <FormInput
-                name="senderEmail"
-                label="Email"
-                type="email"
-                placeholder="you@example.com"
-                value={settings.senderEmail}
-                onChange={handleChange}
-              />
-            </Card>
-            
-            <Card title="Options" style={{ marginTop: '2rem' }}>
-              <FormCheckbox
-                name="saveAddressHistory"
-                label="Save address history for quick selection"
-                checked={settings.saveAddressHistory}
-                onChange={handleChange}
-              />
-              
-              <FormCheckbox
-                name="autoValidateAddresses"
-                label="Automatically validate addresses when entered"
-                checked={settings.autoValidateAddresses}
-                onChange={handleChange}
-              />
-              
-              <FormCheckbox
-                name="showDeliveryEstimates"
-                label="Show delivery time estimates"
-                checked={settings.showDeliveryEstimates}
-                onChange={handleChange}
-              />
-              
-              <FormCheckbox
-                name="emailLabelCopy"
-                label="Email a copy of each label after creation"
-                checked={settings.emailLabelCopy}
-                onChange={handleChange}
-              />
-            </Card>
-          </div>
-        </SettingsGrid>
-        
-        <div className="mt-3 text-right">
-          <ButtonGroup>
-            <BackButton 
-              type="button"
-              variant="secondary" 
-              onClick={() => navigate('/')}
-            >
-              <FaArrowLeft />
-              Back to Home
-            </BackButton>
-            
-            <Button 
-              type="button"
-              variant="outline" 
-              onClick={handleReset}
-            >
-              <FaUndo />
-              Reset to Defaults
-            </Button>
-            
-            <Button 
-              type="submit"
-              variant="primary"
-            >
-              <FaSave />
+          <FormInput
+            label="EasyPost API Key"
+            type="password"
+            placeholder="Enter your EasyPost API key"
+            icon={<FaKey />}
+            name="easypostApiKey"
+            value={settings.easypostApiKey}
+            onChange={handleChange}
+          />
+          
+          <FormInput
+            label="USPS API Key"
+            type="password"
+            placeholder="Enter your USPS API key"
+            icon={<FaKey />}
+            name="uspsApiKey"
+            value={settings.uspsApiKey}
+            onChange={handleChange}
+          />
+          
+          <div className="text-right mt-3">
+            <Button type="submit" primary>
               Save Settings
             </Button>
-          </ButtonGroup>
+          </div>
+        </form>
+      </Card>
+      
+      <SettingsGrid>
+        <div>
+          <Card title="Default Shipping Preferences" style={{ marginTop: '2rem' }}>
+            <FormSelect
+              name="defaultCarrier"
+              label="Preferred Carrier"
+              options={CARRIERS}
+              value={settings.defaultCarrier}
+              onChange={handleChange}
+            />
+            
+            <FormSelect
+              name="defaultServiceType"
+              label="Default Service Type"
+              options={serviceTypes}
+              value={settings.defaultServiceType}
+              onChange={handleChange}
+            />
+            
+            <FormSelect
+              name="defaultPackageType"
+              label="Default Package Type"
+              options={PACKAGE_TYPES}
+              value={settings.defaultPackageType}
+              onChange={handleChange}
+            />
+            
+            {settings.defaultPackageType === 'custom' && (
+              <div className="mt-2">
+                <SectionTitle>Custom Package Dimensions</SectionTitle>
+                <div className="grid grid-2">
+                  <FormInput
+                    name="length"
+                    label="Length (inches)"
+                    type="number"
+                    value={settings.length}
+                    onChange={handleChange}
+                  />
+                  
+                  <FormInput
+                    name="width"
+                    label="Width (inches)"
+                    type="number"
+                    value={settings.width}
+                    onChange={handleChange}
+                  />
+                  
+                  <FormInput
+                    name="height"
+                    label="Height (inches)"
+                    type="number"
+                    value={settings.height}
+                    onChange={handleChange}
+                  />
+                  
+                  <FormInput
+                    name="weight"
+                    label="Weight (lbs)"
+                    type="number"
+                    value={settings.weight}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            )}
+          </Card>
         </div>
-      </form>
-    </div>
+        
+        <div>
+          <Card title="Default Sender Information">
+            <FormInput
+              name="senderName"
+              label="Name"
+              placeholder="Your Name"
+              value={settings.senderName}
+              onChange={handleChange}
+            />
+            
+            <FormInput
+              name="senderCompany"
+              label="Company (Optional)"
+              placeholder="Your Company"
+              value={settings.senderCompany}
+              onChange={handleChange}
+            />
+            
+            <FormInput
+              name="senderStreet1"
+              label="Street Address"
+              placeholder="123 Main St"
+              value={settings.senderStreet1}
+              onChange={handleChange}
+            />
+            
+            <FormInput
+              name="senderStreet2"
+              label="Apartment, Suite, etc. (Optional)"
+              placeholder="Suite 100"
+              value={settings.senderStreet2}
+              onChange={handleChange}
+            />
+            
+            <div className="grid grid-2">
+              <FormInput
+                name="senderCity"
+                label="City"
+                placeholder="San Francisco"
+                value={settings.senderCity}
+                onChange={handleChange}
+              />
+              
+              <FormInput
+                name="senderState"
+                label="State"
+                placeholder="CA"
+                value={settings.senderState}
+                onChange={handleChange}
+              />
+              
+              <FormInput
+                name="senderZipCode"
+                label="ZIP Code"
+                placeholder="94107"
+                value={settings.senderZipCode}
+                onChange={handleChange}
+              />
+              
+              <FormSelect
+                name="senderCountry"
+                label="Country"
+                options={[
+                  { value: 'US', label: 'United States' },
+                  { value: 'CA', label: 'Canada' },
+                  { value: 'MX', label: 'Mexico' }
+                ]}
+                value={settings.senderCountry}
+                onChange={handleChange}
+              />
+            </div>
+            
+            <FormInput
+              name="senderPhone"
+              label="Phone Number"
+              placeholder="(123) 456-7890"
+              value={settings.senderPhone}
+              onChange={handleChange}
+            />
+            
+            <FormInput
+              name="senderEmail"
+              label="Email"
+              type="email"
+              placeholder="you@example.com"
+              value={settings.senderEmail}
+              onChange={handleChange}
+            />
+          </Card>
+          
+          <Card title="Options" style={{ marginTop: '2rem' }}>
+            <FormCheckbox
+              name="saveAddressHistory"
+              label="Save address history for quick selection"
+              checked={settings.saveAddressHistory}
+              onChange={handleChange}
+            />
+            
+            <FormCheckbox
+              name="autoValidateAddresses"
+              label="Automatically validate addresses when entered"
+              checked={settings.autoValidateAddresses}
+              onChange={handleChange}
+            />
+            
+            <FormCheckbox
+              name="showDeliveryEstimates"
+              label="Show delivery time estimates"
+              checked={settings.showDeliveryEstimates}
+              onChange={handleChange}
+            />
+            
+            <FormCheckbox
+              name="emailLabelCopy"
+              label="Email a copy of each label after creation"
+              checked={settings.emailLabelCopy}
+              onChange={handleChange}
+            />
+          </Card>
+        </div>
+      </SettingsGrid>
+      
+      <div className="mt-3 text-right">
+        <ButtonGroup>
+          <BackButton 
+            type="button"
+            variant="secondary" 
+            onClick={() => navigate('/')}
+          >
+            <FaArrowLeft />
+            Back to Home
+          </BackButton>
+          
+          <Button 
+            type="button"
+            variant="outline" 
+            onClick={handleReset}
+          >
+            <FaUndo />
+            Reset to Defaults
+          </Button>
+          
+          <Button 
+            type="submit"
+            variant="primary"
+          >
+            <FaSave />
+            Save Settings
+          </Button>
+        </ButtonGroup>
+      </div>
+    </Container>
   );
 };
 
