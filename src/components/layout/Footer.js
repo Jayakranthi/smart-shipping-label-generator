@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FaGithub, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
 const FooterContainer = styled.footer`
   background-color: var(--dark-color);
@@ -43,6 +44,21 @@ const FooterLinks = styled.div`
   }
 `;
 
+const SocialLinks = styled.div`
+  display: flex;
+  gap: 1.5rem;
+`;
+
+const SocialLink = styled.a`
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
@@ -57,6 +73,17 @@ const Footer = () => {
           <a href="#">Terms of Service</a>
           <a href="#">Contact</a>
         </FooterLinks>
+        <SocialLinks>
+          <SocialLink href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <FaGithub />
+          </SocialLink>
+          <SocialLink href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <FaTwitter />
+          </SocialLink>
+          <SocialLink href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+            <FaLinkedin />
+          </SocialLink>
+        </SocialLinks>
       </FooterContent>
     </FooterContainer>
   );

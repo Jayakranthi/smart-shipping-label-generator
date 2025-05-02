@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft } from 'react-icons/fa';
 import AddressForm from '../forms/AddressForm';
 import Button from '../common/Button';
 
@@ -54,15 +54,10 @@ const BackButton = styled(Button)`
 
 const AddressFormPage = () => {
   const navigate = useNavigate();
-  const [addressData, setAddressData] = useState(null);
   
   const handleAddressSubmit = (data) => {
     // In a real app, you would save this data to state or context
     // and then navigate to the next step
-    setAddressData(data);
-    
-    // For demo purposes, we'll just navigate to a mock preview page
-    // In a real app, you would pass the data to the next page
     navigate('/preview-label/123');
   };
   
